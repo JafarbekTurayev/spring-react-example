@@ -6,6 +6,7 @@ import {ToastContainer} from "react-toastify";
 import Dashboard from "./components/Dashboard";
 import Client from "./components/Client";
 import Product from "./components/Product";
+import Order from "./components/Order";
 
 const App = () => {
     return (
@@ -20,8 +21,7 @@ const App = () => {
                     <Route path={"/category"} element={<Category/>}>Category</Route>
                     <Route path={"/user"} element={<Client/>}>Category</Route>
                     <Route path={"/product"} element={<Product/>}>Product</Route>
-                    {/*<Route element={} path="">Order</Route>*/}
-                    {/*<Route element={} path="">Client</Route>*/}
+                    <Route path={"/order"} element={<Order/>}>Order</Route>
                 </Routes>
             </div>
         </div>

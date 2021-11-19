@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
 
-    private List<BasketProductDTO>basketProductsDTO;
+    private List<BasketProductDTO> basketProductsDTO;
     private double summa;
     private Integer client;
+
 }

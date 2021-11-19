@@ -1,8 +1,8 @@
-package atmos.newsapp.controller;
+package com.example.testserver.service;
 
-
-
-import atmos.newsapp.entity.Client;
+import com.example.testserver.entity.Client;
+import com.example.testserver.payload.ApiResponse;
+import com.example.testserver.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ import java.util.Optional;
 @Service
 public class ClientService {
 
-   @Autowired
-   ClientRepository clientRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
 
     public ApiResponse add(Client client) {
@@ -32,10 +32,13 @@ public class ClientService {
         if (!byId.isPresent()) return new ApiResponse("Not Found", false);
         Client editing = byId.get();
         if (client.getName() != null) editing.setName(client.getName());
-        if (client.getPhoneNumber() != null && !editing.getPhoneNumber().equals(client.getPhoneNumber())) {
-            if (!clientRepository.existsByPhoneNumber(client.getPhoneNumber())) return new ApiResponse("Xato", false);
+        if (client.getPhoneNumber() != null) {
             editing.setPhoneNumber(client.getPhoneNumber());
         }
+//        if (client.getPhoneNumber() != null && !editing.getPhoneNumber().equals(client.getPhoneNumber())) {
+//            if (!clientRepository.existsByPhoneNumber(client.getPhoneNumber())) return new ApiResponse("Xato", false);
+//            editing.setPhoneNumber(client.getPhoneNumber());
+//        }
         clientRepository.save(editing);
         return new ApiResponse("Success", true);
     }

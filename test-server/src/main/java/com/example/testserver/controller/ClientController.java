@@ -1,6 +1,9 @@
-package atmos.newsapp.controller;
+package com.example.testserver.controller;
 
-import atmos.newsapp.entity.Client;
+import com.example.testserver.entity.Client;
+import com.example.testserver.payload.ApiResponse;
+import com.example.testserver.repository.ClientRepository;
+import com.example.testserver.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -11,7 +14,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/api/client")
 public class ClientController {
 
     @Autowired

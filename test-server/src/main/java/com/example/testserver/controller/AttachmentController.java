@@ -2,9 +2,14 @@ package com.example.testserver.controller;
 
 import com.example.testserver.entity.Attachment;
 import com.example.testserver.entity.AttachmentContent;
+import com.example.testserver.exception.ResourceNotFoundException;
 import com.example.testserver.payload.ApiResponse;
 import com.example.testserver.repository.AttachmentContentRepository;
 import com.example.testserver.repository.AttachmentRepository;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,9 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/attachment")
+@RequestMapping("/api/attachment")
 public class AttachmentController {
     final
     AttachmentRepository attachmentRepository;
@@ -68,6 +74,17 @@ public class AttachmentController {
     public ApiResponse getOne(@PathVariable Integer id) {
         Optional<Attachment> byId = attachmentRepository.findById(id);
         return byId.map(attachment -> new ApiResponse("FOUND", true, attachment)).orElseGet(() -> new ApiResponse("NOT FOUND", false));
+    }
+
+    @GetMapping("/{id}")
+    public HttpEntity<?> getFile(@PathVariable Integer id, HttpServletResponse response) {
+        Attachment attachment = attachmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Attachment", "id", id));
+        AttachmentContent attachmentContent = attachmentContentRepository.findByAttachment(attachment).orElseThrow(() -> new ResourceNotFoundException("Attachment content", "attachment id", id));
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(attachment.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getOriginalName() + "\"")
+                .body(attachmentContent.getBytes());
     }
 
     @GetMapping("/info")

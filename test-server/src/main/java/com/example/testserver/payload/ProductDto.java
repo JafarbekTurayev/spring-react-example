@@ -23,4 +23,6 @@ public class ProductDto {
     private Integer categoryId;
     @NotNull
     private boolean active;
+    @NotNull
+    private Integer attachmentId;
 }
